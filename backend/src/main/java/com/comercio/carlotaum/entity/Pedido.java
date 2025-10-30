@@ -58,12 +58,10 @@ public class Pedido {
     }
     
     public enum EstadoPedido {
-        PENDIENTE,           // Pedido creado, esperando comprobante
+        PENDIENTE,            // Pedido creado, esperando comprobante
         ESPERANDO_VALIDACION, // Comprobante subido, esperando validación admin
-        CONFIRMADO,          // Pago validado por admin
-        EN_PREPARACION,      // Comida en preparación
-        LISTO_PARA_ENTREGA,  // Listo para recoger
-        ENTREGADO,           // Entregado al cliente
-        CANCELADO            // Cancelado
+        CONFIRMADO,           // Pago validado por admin, preparando pedido
+        ENTREGADO,            // Entregado al cliente
+        CANCELADO             // Cancelado
     }
 }

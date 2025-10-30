@@ -53,7 +53,7 @@ public class PedidoService {
         
         // Reducir stock
         producto.setStockDisponible(producto.getStockDisponible() - cantidad);
-        productoService.actualizarProducto(producto.getId(), producto);
+        productoService.guardarProducto(producto);
         
         return pedidoRepository.save(pedido);
     }
