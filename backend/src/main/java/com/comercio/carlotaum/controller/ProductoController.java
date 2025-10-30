@@ -26,6 +26,12 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.obtenerProductosActivos());
     }
     
+    @GetMapping("/admin/todos")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Producto>> obtenerTodosLosProductos() {
+        return ResponseEntity.ok(productoService.obtenerTodosLosProductos());
+    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<Producto> obtenerProducto(@PathVariable Long id) {
         return ResponseEntity.ok(productoService.obtenerProductoPorId(id));
@@ -72,6 +78,6 @@ public class ProductoController {
                                                      @RequestParam Integer stock) {
         Producto producto = productoService.obtenerProductoPorId(id);
         producto.setStockDisponible(stock);
-        return ResponseEntity.ok(productoService.actualizarProducto(id, producto));
+        return ResponseEntity.ok(productoService.guardarProducto(producto));
     }
 }
