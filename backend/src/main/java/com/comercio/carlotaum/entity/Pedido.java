@@ -49,6 +49,9 @@ public class Pedido {
     @Column(columnDefinition = "TEXT")
     private String notas;
     
+    @Column(name = "lugar_entrega", nullable = false)
+    private String lugarEntrega;
+    
     @PrePersist
     protected void onCreate() {
         fechaPedido = LocalDateTime.now();

@@ -27,11 +27,19 @@ public class PedidoService {
     @Autowired
     private FileStorageService fileStorageService;
     
-    public Pedido crearPedido(Usuario usuario, Long productoId, Integer cantidad, String notas) {
+    @Autowired
+    private EmailService emailService;
+    
+    public Pedido crearPedido(Usuario usuario, Long productoId, Integer cantidad, String notas, String lugarEntrega) {
         Producto producto = productoService.obtenerProductoPorId(productoId);
         
         if (!producto.getActivo()) {
             throw new RuntimeException("El producto no está disponible");
+        }
+        
+        // Validar stock disponible
+        if (producto.getStockDisponible() < cantidad) {
+            throw new RuntimeException("Stock insuficiente. Solo hay " + producto.getStockDisponible() + " unidades disponibles");
         }
         
         Pedido pedido = new Pedido();
@@ -41,6 +49,11 @@ public class PedidoService {
         pedido.setTotal(producto.getPrecio().multiply(BigDecimal.valueOf(cantidad)));
         pedido.setEstado(EstadoPedido.PENDIENTE);
         pedido.setNotas(notas);
+        pedido.setLugarEntrega(lugarEntrega);
+        
+        // Reducir stock
+        producto.setStockDisponible(producto.getStockDisponible() - cantidad);
+        productoService.actualizarProducto(producto.getId(), producto);
         
         return pedidoRepository.save(pedido);
     }
@@ -65,7 +78,12 @@ public class PedidoService {
         pedido.setComprobanteUrl(comprobanteUrl);
         pedido.setEstado(EstadoPedido.ESPERANDO_VALIDACION);
         
-        return pedidoRepository.save(pedido);
+        Pedido pedidoGuardado = pedidoRepository.save(pedido);
+        
+        // Enviar notificación al admin de nuevo pedido con comprobante
+        emailService.enviarNotificacionNuevoPedido(pedidoGuardado);
+        
+        return pedidoGuardado;
     }
     
     public Pedido cambiarEstadoPedido(Long pedidoId, EstadoPedido nuevoEstado) {
@@ -76,7 +94,14 @@ public class PedidoService {
             pedido.setFechaEntrega(LocalDateTime.now());
         }
         
-        return pedidoRepository.save(pedido);
+        Pedido actualizado = pedidoRepository.save(pedido);
+        
+        if (nuevoEstado == EstadoPedido.CONFIRMADO) {
+            // Notificar al usuario que su pago fue confirmado
+            emailService.enviarNotificacionPagoValidado(actualizado);
+        }
+        
+        return actualizado;
     }
     
     public List<Pedido> obtenerPedidosDeUsuario(Long usuarioId) {

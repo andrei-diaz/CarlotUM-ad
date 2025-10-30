@@ -65,4 +65,13 @@ public class ProductoController {
         productoService.eliminarProducto(id);
         return ResponseEntity.ok().build();
     }
+    
+    @PutMapping("/{id}/stock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Producto> actualizarStock(@PathVariable Long id, 
+                                                     @RequestParam Integer stock) {
+        Producto producto = productoService.obtenerProductoPorId(id);
+        producto.setStockDisponible(stock);
+        return ResponseEntity.ok(productoService.actualizarProducto(id, producto));
+    }
 }

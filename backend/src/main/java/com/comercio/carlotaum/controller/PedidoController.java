@@ -29,7 +29,8 @@ public class PedidoController {
                 usuario,
                 pedidoRequest.getProductoId(),
                 pedidoRequest.getCantidad(),
-                pedidoRequest.getNotas()
+                pedidoRequest.getNotas(),
+                pedidoRequest.getLugarEntrega()
         );
         return ResponseEntity.ok(pedido);
     }

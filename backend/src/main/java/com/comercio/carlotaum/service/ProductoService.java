@@ -20,7 +20,8 @@ public class ProductoService {
     }
     
     public List<Producto> obtenerProductosActivos() {
-        return productoRepository.findByActivoTrue();
+        // Retorna solo productos activos con stock mayor a 0
+        return productoRepository.findByActivoTrueAndStockDisponibleGreaterThan(0);
     }
     
     public Producto obtenerProductoPorId(Long id) {

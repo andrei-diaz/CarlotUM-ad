@@ -34,6 +34,9 @@ public class Producto {
     @Column(nullable = false)
     private Boolean activo = true;
     
+    @Column(name = "stock_disponible", nullable = false)
+    private Integer stockDisponible = 0;
+    
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
     
