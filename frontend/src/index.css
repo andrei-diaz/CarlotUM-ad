@@ -1,13 +1,42 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F5F5DC;
+    @apply dark:bg-gray-900;
+    @apply transition-colors duration-300;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* View Transition API styles */
+::view-transition-group(root) {
+  animation-timing-function: ease-in-out;
+}
+
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="white"/></svg>') center / 0 no-repeat;
+  mask-origin: content-box;
+  animation: scale-up 0.5s;
+}
+
+::view-transition-old(root) {
+  animation: scale-down 0.5s;
+  z-index: -1;
+}
+
+@keyframes scale-up {
+  to {
+    mask-size: 200vmax;
+  }
+}
+
+@keyframes scale-down {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
