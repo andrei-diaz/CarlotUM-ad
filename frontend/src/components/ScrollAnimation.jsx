@@ -10,7 +10,7 @@ const ScrollAnimation = () => {
   return (
     <section
       ref={ref}
-      className="mx-auto flex h-[350vh] w-screen flex-col items-center overflow-hidden bg-gradient-to-br from-beige-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 text-gray-800 dark:text-white pb-0"
+      className="mx-auto flex h-[350vh] w-screen flex-col items-center overflow-hidden bg-transparent dark:bg-transparent px-4 text-gray-800 dark:text-white pb-0"
     >
       <div className="mt-42 relative flex w-fit flex-col items-center justify-center gap-5 text-center">
         <h1 className="relative z-10 text-7xl font-bold tracking-tight lg:text-9xl dark:text-white">

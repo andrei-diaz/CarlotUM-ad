@@ -52,7 +52,7 @@ const AdminPedidos = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-beige-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-20 px-6">
+    <div className="min-h-screen bg-transparent dark:bg-transparent py-20 px-6">
       <div className="container mx-auto">
         <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-primary-600 to-lemon-500 bg-clip-text text-transparent">
           Gestión de Pedidos
