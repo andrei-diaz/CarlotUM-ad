@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { resenaService } from '../services/resenaService';
+import ResenaCard from '../components/ResenaCard';
 
 const MisResenas = () => {
   const [resenas, setResenas] = useState([]);
@@ -21,9 +23,6 @@ const MisResenas = () => {
     }
   };
 
-  const renderStars = (calificacion) => {
-    return '⭐'.repeat(calificacion);
-  };
 
   if (loading) {
     return (
@@ -42,54 +41,49 @@ const MisResenas = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-beige-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-20 px-6">
+    <div className="min-h-screen py-20 px-6">
       <div className="container mx-auto">
-        <h1 className="text-5xl font-bold text-center mb-12 bg-gradient-to-r from-primary-600 to-lemon-500 bg-clip-text text-transparent">
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-5xl lg:text-7xl font-bold text-center mb-4 bg-gradient-to-r from-primary-600 to-lemon-500 bg-clip-text text-transparent"
+        >
           Mis Reseñas
-        </h1>
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-center text-xl text-gray-600 dark:text-gray-400 mb-16 max-w-2xl mx-auto"
+        >
+          Gestiona todas tus reseñas en un solo lugar
+        </motion.p>
 
         {resenas.length === 0 ? (
-          <div className="text-center text-gray-600 dark:text-gray-400 text-xl">
-            No has escrito ninguna reseña todavía
-          </div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20"
+          >
+            <div className="text-6xl mb-4"></div>
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-2">
+              No has escrito ninguna reseña todavía
+            </p>
+            <p className="text-gray-500 dark:text-gray-500">
+              ¡Comparte tu experiencia con nosotros!
+            </p>
+          </motion.div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {resenas.map((resena) => (
-              <div
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {resenas.map((resena, index) => (
+              <motion.div
                 key={resena.id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
               >
-                {!resena.aprobada && (
-                  <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded">
-                    Pendiente
-                  </div>
-                )}
-                {resena.aprobada && (
-                  <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
-                    ✓ Aprobada
-                  </div>
-                )}
-                
-                {resena.imagenUrl && (
-                  <img
-                    src={resenaService.getImageUrl(resena.imagenUrl)}
-                    alt="Reseña"
-                    className="w-full h-48 object-cover rounded-lg mb-4"
-                  />
-                )}
-                
-                <div className="text-2xl mb-2">{renderStars(resena.calificacion)}</div>
-                
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                  {resena.comentario}
-                </p>
-                
-                <div className="border-t pt-4">
-                  <p className="text-xs text-gray-500">
-                    {new Date(resena.fecha).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
+                <ResenaCard resena={resena} showStatus={true} />
+              </motion.div>
             ))}
           </div>
         )}

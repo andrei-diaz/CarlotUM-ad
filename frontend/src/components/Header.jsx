@@ -14,6 +14,17 @@ const Header = () => {
     setTheme(savedTheme);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showAdminDropdown && !event.target.closest('.admin-dropdown-container')) {
+        setShowAdminDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showAdminDropdown]);
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     
@@ -69,7 +80,7 @@ const Header = () => {
               </>
             )}
             {isAdmin() && (
-              <div className="relative">
+              <div className="relative admin-dropdown-container">
                 <button
                   onClick={() => setShowAdminDropdown(!showAdminDropdown)}
                   className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium"
@@ -79,13 +90,6 @@ const Header = () => {
                 </button>
                 {showAdminDropdown && (
                   <div className="absolute top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
-                    <Link
-                      to="/admin"
-                      onClick={() => setShowAdminDropdown(false)}
-                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      Dashboard
-                    </Link>
                     <Link
                       to="/admin/productos"
                       onClick={() => setShowAdminDropdown(false)}

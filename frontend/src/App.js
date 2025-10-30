@@ -11,7 +11,6 @@ import NuevoPedido from './pages/NuevoPedido';
 import MisPedidos from './pages/MisPedidos';
 import Resenas from './pages/Resenas';
 import MisResenas from './pages/MisResenas';
-import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminPedidos from './pages/admin/AdminPedidos';
 import AdminResenas from './pages/admin/AdminResenas';
 import AdminProductos from './pages/admin/AdminProductos';
@@ -61,15 +60,7 @@ function App() {
               />
 
               {/* Rutas protegidas de admin */}
-              <Route 
-                path="/admin" 
-                element={
-                  <ProtectedRoute requireAdmin>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
+              <Route
                 path="/admin/pedidos" 
                 element={
                   <ProtectedRoute requireAdmin>
